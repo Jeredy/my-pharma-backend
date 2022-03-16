@@ -17,7 +17,8 @@ class ProductController {
   }
 
   async updated(req, res) {
-    const { _id, name, description, category, brand } = req.body;
+    const { _id, name, description, category, brand, price, inventory } =
+      req.body;
 
     try {
       const product = await ProductModel.findOne({ id: _id });
@@ -25,12 +26,16 @@ class ProductController {
       const ProductDescription = description ?? product.description;
       const ProductCategory = category ?? product.category;
       const ProductBrand = brand ?? product.brand;
+      const ProductPrice = price ?? product.price;
+      const ProductInventory = inventory ?? product.inventory;
 
       await ProductModel.updateOne({
         name: ProductName,
         description: ProductDescription,
         category: ProductCategory,
         brand: ProductBrand,
+        price: ProductPrice,
+        inventory: ProductInventory,
       });
 
       res.send({ status: "OK" });
@@ -40,10 +45,11 @@ class ProductController {
   }
 
   async delete(req, res) {
-    const { _id } = req.body;
-    
+    const { idList } = req.body;
+    const deleteList = JSON.parse(idList);
+
     try {
-      await ProductModel.deleteOne({ id: _id });
+      await ProductModel.deleteMany({ id: [deleteList] });
 
       res.send({ status: "OK" });
     } catch (err) {

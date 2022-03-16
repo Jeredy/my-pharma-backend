@@ -1,6 +1,6 @@
 const CategoryModel = require("../models/Category");
 
-class ProductController {
+class CategoryController {
   async index(req, res) {
     const categories = await CategoryModel.find({});
     res.send(categories);
@@ -17,20 +17,16 @@ class ProductController {
   }
 
   async updated(req, res) {
-    const { _id, name, description, category, brand } = req.body;
+    const { _id, name, description } = req.body;
 
     try {
-      const product = await CategoryModel.findOne({ id: _id });
-      const ProductName = name ?? product.name;
-      const ProductDescription = description ?? product.description;
-      const ProductCategory = category ?? product.category;
-      const ProductBrand = brand ?? product.brand;
+      const category = await CategoryModel.findOne({ id: _id });
+      const CategoryName = name ?? category.name;
+      const CategoryDescription = description ?? category.description;
 
       await CategoryModel.updateOne({
-        name: ProductName,
-        description: ProductDescription,
-        category: ProductCategory,
-        brand: ProductBrand,
+        name: CategoryName,
+        description: CategoryDescription,
       });
 
       res.send({ status: "OK" });
@@ -52,4 +48,4 @@ class ProductController {
   }
 }
 
-module.exports = new ProductController();
+module.exports = new CategoryController();

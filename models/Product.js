@@ -5,10 +5,12 @@ const ProductSchema = new mongoose.Schema({
   description: { type: String },
   category: { type: String },
   brand: { type: String },
+  price: { type: Number },
+  inventory: { type: Number },
   date: {
     type: Number,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 });
 
 const ProductModel = mongoose.model("Products", ProductSchema);

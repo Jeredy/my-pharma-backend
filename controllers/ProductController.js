@@ -47,9 +47,9 @@ class ProductController {
   async delete(req, res) {
     const { idList } = req.body;
     const deleteList = JSON.parse(idList);
-
+    
     try {
-      await ProductModel.deleteMany({ id: [deleteList] });
+      await ProductModel.deleteMany({ _id: { $in: deleteList } });
 
       res.send({ status: "OK" });
     } catch (err) {

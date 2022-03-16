@@ -36,10 +36,11 @@ class BrandController {
   }
 
   async delete(req, res) {
-    const { _id } = req.body;
+    const { idList } = req.body;
+    const deleteList = JSON.parse(idList);
     
     try {
-      await BrandModel.deleteOne({ id: _id });
+      await BrandModel.deleteMany({ _id: { $in: deleteList } });
 
       res.send({ status: "OK" });
     } catch (err) {

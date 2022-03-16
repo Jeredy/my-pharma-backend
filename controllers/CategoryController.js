@@ -36,10 +36,11 @@ class CategoryController {
   }
 
   async delete(req, res) {
-    const { _id } = req.body;
+    const { idList } = req.body;
+    const deleteList = JSON.parse(idList);
     
     try {
-      await CategoryModel.deleteOne({ id: _id });
+      await CategoryModel.deleteMany({ _id: { $in: deleteList } });
 
       res.send({ status: "OK" });
     } catch (err) {

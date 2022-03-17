@@ -21,7 +21,9 @@ class ProductController {
       req.body;
 
     try {
-      const product = await ProductModel.findOne({ id: _id });
+      const product = await ProductModel.findById(_id);
+
+      console.log(product);
       const ProductName = name ?? product.name;
       const ProductDescription = description ?? product.description;
       const ProductCategory = category ?? product.category;
@@ -29,7 +31,7 @@ class ProductController {
       const ProductPrice = price ?? product.price;
       const ProductInventory = inventory ?? product.inventory;
 
-      await ProductModel.updateOne({
+      await ProductModel.where({ _id }).updateOne({
         name: ProductName,
         description: ProductDescription,
         category: ProductCategory,
@@ -47,7 +49,7 @@ class ProductController {
   async delete(req, res) {
     const { idList } = req.body;
     const deleteList = JSON.parse(idList);
-    
+
     try {
       await ProductModel.deleteMany({ _id: { $in: deleteList } });
 

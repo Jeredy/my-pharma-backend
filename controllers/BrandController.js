@@ -20,11 +20,11 @@ class BrandController {
     const { _id, name, description } = req.body;
 
     try {
-      const brand = await BrandModel.findOne({ id: _id });
+      const brand = await BrandModel.findById(_id)
       const BrandName = name ?? brand.name;
       const BrandDescription = description ?? brand.description;
 
-      await BrandModel.updateOne({
+      await BrandModel.where({ _id }).updateOne({
         name: BrandName,
         description: BrandDescription,
       });
@@ -38,7 +38,7 @@ class BrandController {
   async delete(req, res) {
     const { idList } = req.body;
     const deleteList = JSON.parse(idList);
-    
+
     try {
       await BrandModel.deleteMany({ _id: { $in: deleteList } });
 

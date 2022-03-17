@@ -2,6 +2,7 @@ const { Router } = require("express");
 const ProductController = require("../controllers/ProductController");
 const CategoryController = require("../controllers/CategoryController");
 const BrandController = require("../controllers/BrandController");
+const AdminController = require("../controllers/AdminController");
 
 const router = Router();
 
@@ -23,4 +24,7 @@ router.post("/brand/store", BrandController.store);
 router.put("/brand/update", BrandController.updated);
 router.delete("/brand/delete", BrandController.delete);
 
+/* ADMIN ROUTES */
+router.post("/signin", AdminController.index);
+router.post("/signup", AdminController.store);
 module.exports = router;

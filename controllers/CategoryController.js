@@ -20,11 +20,11 @@ class CategoryController {
     const { _id, name, description } = req.body;
 
     try {
-      const category = await CategoryModel.findOne({ id: _id });
+      const category = await CategoryModel.findById(_id);
       const CategoryName = name ?? category.name;
       const CategoryDescription = description ?? category.description;
 
-      await CategoryModel.updateOne({
+      await CategoryModel.where({ _id }).updateOne({
         name: CategoryName,
         description: CategoryDescription,
       });

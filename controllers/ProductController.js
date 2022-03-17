@@ -2,12 +2,19 @@ const ProductModel = require("../models/Product");
 
 class ProductController {
   async index(req, res) {
-    const products = await ProductModel.find({});
-    res.send(products);
+    const PAGE_SIZE = 3;
+    const page = parseInt(req.query.page || "0");
+    const total = await ProductModel.countDocuments({});
+
+    const products = await ProductModel.find({})
+      .limit(PAGE_SIZE)
+      .skip(PAGE_SIZE * page);
+    res.send({ products, totalPages: Math.ceil(total / PAGE_SIZE) });
   }
 
   async store(req, res) {
     const record = req.body;
+
     try {
       await ProductModel.create(record);
       res.json({ status: "OK" });

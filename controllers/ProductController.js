@@ -2,11 +2,12 @@ const ProductModel = require("../models/Product");
 
 class ProductController {
   async index(req, res) {
+    // return res.send({ message: "ok" });
     const PAGE_SIZE = 10;
     const page = parseInt(req.query.page || "0");
     const total = await ProductModel.countDocuments({});
     const { name, category, brand } = req.query;
-    console.log({ name, category, brand });
+
     const searchQuery =
       name && category && brand
         ? {

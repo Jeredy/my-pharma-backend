@@ -5,8 +5,11 @@ class BrandController {
     const PAGE_SIZE = 10;
     const page = parseInt(req.query.page || "0");
     const total = await BrandModel.countDocuments({});
+    const { name } = req.query;
 
-    const brands = await BrandModel.find({})
+    const searchQuery = name ? { name: { $regex: name } } : {};
+
+    const brands = await BrandModel.find(searchQuery)
       .limit(PAGE_SIZE)
       .skip(PAGE_SIZE * page);
 
@@ -27,7 +30,7 @@ class BrandController {
     const { _id, name, description } = req.body;
 
     try {
-      const brand = await BrandModel.findById(_id)
+      const brand = await BrandModel.findById(_id);
       const BrandName = name ?? brand.name;
       const BrandDescription = description ?? brand.description;
 

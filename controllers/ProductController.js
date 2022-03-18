@@ -5,8 +5,30 @@ class ProductController {
     const PAGE_SIZE = 10;
     const page = parseInt(req.query.page || "0");
     const total = await ProductModel.countDocuments({});
+    const { name, category, brand } = req.query;
+    console.log({ name, category, brand });
+    const searchQuery =
+      name && category && brand
+        ? {
+            name: { $regex: name },
+            category: { $regex: category },
+            brand: { $regex: brand },
+          }
+        : name && category
+        ? { name: { $regex: name }, category: { $regex: category } }
+        : name && brand
+        ? { name: { $regex: name }, brand: { $regex: brand } }
+        : brand && category
+        ? { brand: { $regex: brand }, category: { $regex: category } }
+        : name
+        ? { name: { $regex: name } }
+        : category
+        ? { category: { $regex: category } }
+        : brand
+        ? { brand: { $regex: brand } }
+        : {};
 
-    const products = await ProductModel.find({})
+    const products = await ProductModel.find(searchQuery)
       .limit(PAGE_SIZE)
       .skip(PAGE_SIZE * page);
 

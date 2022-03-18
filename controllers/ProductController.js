@@ -2,13 +2,14 @@ const ProductModel = require("../models/Product");
 
 class ProductController {
   async index(req, res) {
-    const PAGE_SIZE = 3;
+    const PAGE_SIZE = 10;
     const page = parseInt(req.query.page || "0");
     const total = await ProductModel.countDocuments({});
 
     const products = await ProductModel.find({})
       .limit(PAGE_SIZE)
       .skip(PAGE_SIZE * page);
+
     res.send({ products, totalPages: Math.ceil(total / PAGE_SIZE) });
   }
 

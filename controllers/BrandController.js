@@ -2,8 +2,15 @@ const BrandModel = require("../models/Brand");
 
 class BrandController {
   async index(req, res) {
-    const brands = await BrandModel.find({});
-    res.send(brands);
+    const PAGE_SIZE = 1;
+    const page = parseInt(req.query.page || "0");
+    const total = await BrandModel.countDocuments({});
+
+    const brands = await BrandModel.find({})
+      .limit(PAGE_SIZE)
+      .skip(PAGE_SIZE * page);
+
+    res.send({ brands, totalPages: Math.ceil(total / PAGE_SIZE) });
   }
 
   async store(req, res) {

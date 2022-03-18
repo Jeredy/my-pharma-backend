@@ -2,8 +2,15 @@ const CategoryModel = require("../models/Category");
 
 class CategoryController {
   async index(req, res) {
-    const categories = await CategoryModel.find({});
-    res.send(categories);
+    const PAGE_SIZE = 10;
+    const page = parseInt(req.query.page || "0");
+    const total = await CategoryModel.countDocuments({});
+
+    const categories = await CategoryModel.find({})
+      .limit(PAGE_SIZE)
+      .skip(PAGE_SIZE * page);
+
+    res.send({ categories, totalPages: Math.ceil(total / PAGE_SIZE) });
   }
 
   async store(req, res) {
@@ -38,7 +45,7 @@ class CategoryController {
   async delete(req, res) {
     const { idList } = req.body;
     const deleteList = JSON.parse(idList);
-    
+
     try {
       await CategoryModel.deleteMany({ _id: { $in: deleteList } });
 

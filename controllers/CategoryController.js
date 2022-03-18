@@ -5,8 +5,18 @@ class CategoryController {
     const PAGE_SIZE = 10;
     const page = parseInt(req.query.page || "0");
     const total = await CategoryModel.countDocuments({});
+    const { name, description } = req.query;
 
-    const categories = await CategoryModel.find({})
+    const searchQuery =
+      name && description
+        ? { name: { $regex: name }, description: { $regex: description } }
+        : description
+        ? { description: { $regex: description } }
+        : name
+        ? { name: { $regex: name } }
+        : {};
+
+    const categories = await CategoryModel.find(searchQuery)
       .limit(PAGE_SIZE)
       .skip(PAGE_SIZE * page);
 

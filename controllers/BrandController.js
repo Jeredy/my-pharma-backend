@@ -2,7 +2,7 @@ const BrandModel = require("../models/Brand");
 
 class BrandController {
   async index(req, res) {
-    const PAGE_SIZE = 1;
+    const PAGE_SIZE = 10;
     const page = parseInt(req.query.page || "0");
     const total = await BrandModel.countDocuments({});
 

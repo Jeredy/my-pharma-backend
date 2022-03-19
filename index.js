@@ -1,10 +1,9 @@
-const mongoose = require("mongoose");
-const { MONGODB } = require("./config");
+const { connect } = require("./db/connection");
 const app = require("./server");
 
 const port = 5000;
 
-module.exports = mongoose.connect(MONGODB).then(() => {
+module.exports = connect().then(() => {
   app.listen(port, () => {
     console.log(`Exemple app listening at http://localhost:${port}`);
   });

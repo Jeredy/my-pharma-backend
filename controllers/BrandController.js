@@ -19,14 +19,14 @@ class BrandController {
   async store(req, res) {
     const record = req.body;
     try {
-      await BrandModel.create(record);
-      res.json({ status: "OK" });
+      const response = await BrandModel.create(record);
+      res.json({ status: "OK", response });
     } catch (err) {
       console.log(err);
     }
   }
 
-  async updated(req, res) {
+  async update(req, res) {
     const { _id, name, description } = req.body;
 
     try {

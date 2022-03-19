@@ -2,7 +2,6 @@ const ProductModel = require("../models/Product");
 
 class ProductController {
   async index(req, res) {
-    // return res.send({ message: "ok" });
     const PAGE_SIZE = 10;
     const page = parseInt(req.query.page || "0");
     const total = await ProductModel.countDocuments({});
@@ -40,21 +39,20 @@ class ProductController {
     const record = req.body;
 
     try {
-      await ProductModel.create(record);
-      res.json({ status: "OK" });
+      const response = await ProductModel.create(record);
+      res.json({ status: "OK", response });
     } catch (err) {
       console.log(err);
     }
   }
 
-  async updated(req, res) {
+  async update(req, res) {
     const { _id, name, description, category, brand, price, inventory } =
       req.body;
 
     try {
       const product = await ProductModel.findById(_id);
 
-      console.log(product);
       const ProductName = name ?? product.name;
       const ProductDescription = description ?? product.description;
       const ProductCategory = category ?? product.category;
